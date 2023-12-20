@@ -3,7 +3,7 @@
 set -euo pipefail
 
 run_speedtest() {
-    speedtest-cli --csv
+    speedtest-cli --csv --secure
 }
 
 parse_result() {
