@@ -1,0 +1,31 @@
+networks:
+    monitor_network:
+        driver: bridge
+        name: monitor_network
+
+services:
+    timescale:
+        image: timescale/timescaledb:latest-pg14
+        environment:
+            POSTGRES_PASSWORD: ${TIMESCALE_PASS}
+            POSTGRES_USER: ${TIMESCALE_USER}
+            POSTGRES_DB: ${TIMESCALE_DB}
+        volumes:
+            - ${TIMESCALE_DATA}:/var/lib/postgresql/data/
+            - ${TIMESCALE_INIT}:/docker-entrypoint-initdb.d/
+        ports:
+            - ${TIMESCALE_PORT}:5432
+        user: "${TIMESCALE_UID}:${TIMESCALE_GID}"
+    network_monitor:
+        build: ./monitor
+        volumes:
+            - ./monitor:/opt/monitoring
+        environment:
+            PGHOST: timescale
+            PGDATABASE: timescale
+            # Port 5432 within network
+            PGPORT: 5432
+            PGUSER: ${TIMESCALE_USER}
+            PGPASSWORD: ${TIMESCALE_PASS}
+            MONITOR_LATENCY_ADDRESSES: ${MONITOR_LATENCY_ADDRESSES}
+            MONITOR_LOCAL_ADDRESS: ${MONITOR_LOCAL_ADDRESS}
