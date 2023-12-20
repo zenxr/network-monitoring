@@ -17,8 +17,8 @@ select create_hypertable('timescale.latency_metric', by_range('created_on'));
 create table timescale.bandwidth_metric (
     source varchar(100) not null,
     latency_ms integer,
-    download_mbs integer,
-    upload_mbs integer,
+    download_kbs integer,
+    upload_kbs integer,
     created_on timestamp default now() not null
 );
 

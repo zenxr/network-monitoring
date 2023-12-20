@@ -30,7 +30,7 @@ store_result() {
 
     read -r latency download upload <<< "$input"
 
-    local sql="insert into bandwidth_metric (source, latency_ms, download_mbs, upload_mbs) values ('speedtest', $latency, $download, $upload)"
+    local sql="insert into bandwidth_metric (source, latency_ms, download_kbs, upload_kbs) values ('speedtest', $latency, $download, $upload)"
     say_info "$sql"
     psql -c "$sql"
 }
