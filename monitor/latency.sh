@@ -15,6 +15,7 @@ dumb_ping() {
 export -f dumb_ping
 
 main() {
+    say_info "Running latency monitoring..."
     check_local_up
     echo "$PING_ADDRESSES" | tr ',' '\n' | parallel -k check_remote_up
 }
@@ -58,7 +59,6 @@ store_result() {
     read -r address latency <<< "$input"
     
     local sql="insert into latency_metric (address, latency_ms) values ('$address', $latency);"
-    # echo "$sql"
     psql -c "$sql"
 }
 export -f store_result
