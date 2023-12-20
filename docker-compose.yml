@@ -22,7 +22,7 @@ services:
             - ./monitor:/opt/monitoring
         environment:
             PGHOST: timescale
-            PGDATABASE: timescale
+            PGDATABASE: ${TIMESCALE_DB}
             # Port 5432 within network
             PGPORT: 5432
             PGUSER: ${TIMESCALE_USER}
