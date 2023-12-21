@@ -3,12 +3,14 @@
 Weekend project to monitor home network, may improve over time. Metric gathering
 is done via simple bash scripts, automated via cronjobs in a docker container.
 
-## Observability
+## What's monitored?
 
-- outages
-- latency once per minute
-- upload speed once per hour
-- download speed once per hour
+| Metric         | Interval |
+| :----          | :----    |
+| Latency        | 60 sec   |
+| Outages        | 60 sec   |
+| Upload Speed   | 1 hour   |
+| Download Speed | 1 hour   |
 
 ## Visualizations
 
