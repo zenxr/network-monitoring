@@ -6,16 +6,18 @@ networks:
 services:
     timescale:
         image: timescale/timescaledb:latest-pg14
+        user: "${USER_UID}:${USER_GID}"
         environment:
             POSTGRES_PASSWORD: ${TIMESCALE_PASS}
             POSTGRES_USER: ${TIMESCALE_USER}
             POSTGRES_DB: ${TIMESCALE_DB}
+            GRAFANA_DB_USER: ${GRAFANA_DB_USER}
+            GRAFANA_DB_PASSWORD: ${GRAFANA_DB_PASSWORD}
         volumes:
             - ${TIMESCALE_DATA}:/var/lib/postgresql/data/
             - ${TIMESCALE_INIT}:/docker-entrypoint-initdb.d/
         ports:
             - ${TIMESCALE_PORT}:5432
-        user: "${TIMESCALE_UID}:${TIMESCALE_GID}"
     network_monitor:
         build: ./monitor
         volumes:
@@ -29,3 +31,20 @@ services:
             PGPASSWORD: ${TIMESCALE_PASS}
             MONITOR_LATENCY_ADDRESSES: ${MONITOR_LATENCY_ADDRESSES}
             MONITOR_LOCAL_ADDRESS: ${MONITOR_LOCAL_ADDRESS}
+        depends_on:
+            - timescale
+    grafana:
+        image: grafana/grafana-oss
+        user: "${USER_UID}:${USER_GID}"
+        environment:
+            GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+            GF_USERS_ALLOW_SIGN_UP: ${GRAFANA_USERS_ALLOW_SIGNUP}
+            GRAFANA_DB_USER: ${GRAFANA_DB_USER}
+            GRAFANA_DB_PASSWORD: ${GRAFANA_DB_PASSWORD}
+        volumes:
+            - ${GRAFANA_DATA_DIR}:/var/lib/grafana
+            - ${GRAFANA_PROVISION_DIR}:/etc/grafana/provisioning/
+        ports:
+            - ${GRAFANA_PORT}:3000
+        depends_on:
+            - timescale
