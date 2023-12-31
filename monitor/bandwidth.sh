@@ -13,9 +13,9 @@ parse_result() {
     local download_bps
     local upload_bps
 
-    latency_ms="$(echo "$result" | cut -d ',' -f 7 | sed -r "$strip_to_int")"
-    download_bps="$(echo "$result" | cut -d ',' -f 8 | sed -r "$strip_to_int")"
-    upload_bps="$(echo "$result" | cut -d ',' -f 9 | sed -r "$strip_to_int")"
+    latency_ms="$(echo "$result" | xsv select 6 | sed -r "$strip_to_int")"
+    download_bps="$(echo "$result" | xsv select 7 | sed -r "$strip_to_int")"
+    upload_bps="$(echo "$result" | xsv select 8 | sed -r "$strip_to_int")"
     say_info "Latency: $latency_ms, Download bps: $download_bps, Upload bps: $upload_bps"
 
     echo $latency_ms $(( download_bps / 1024 )) $(( upload_bps / 1024 ))

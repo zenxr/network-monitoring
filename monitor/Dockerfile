@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN apk add --no-cache bash parallel postgresql-client speedtest-cli
+RUN apk add --no-cache bash parallel postgresql-client speedtest-cli xsv
 
 COPY . /opt/monitoring
 WORKDIR /opt/monitoring
