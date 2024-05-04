@@ -41,9 +41,10 @@ services:
             GF_USERS_ALLOW_SIGN_UP: ${GRAFANA_USERS_ALLOW_SIGNUP}
             GRAFANA_DB_USER: ${GRAFANA_DB_USER}
             GRAFANA_DB_PASSWORD: ${GRAFANA_DB_PASSWORD}
+            TIMESCALE_DB: ${TIMESCALE_DB}
         volumes:
             - ${GRAFANA_DATA_DIR}:/var/lib/grafana
-            - ${GRAFANA_PROVISION_DIR}:/etc/grafana/provisioning/
+            - ${PWD}/static/:/etc/grafana/provisioning/
         ports:
             - ${GRAFANA_PORT}:3000
         depends_on:
